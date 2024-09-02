@@ -1,0 +1,31 @@
+.shadow {
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+.selected-spec {
+    // color: #fff;
+    background-color: rgba(0, 0, 0, 0.06);
+    border-color: #ddd;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.container {
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-icon {
+    color:555;
+    cursor: pointer;
+}
+
+.border-bottom {
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.125);
+    margin-bottom: .75rem;
+}
+

@@ -1,0 +1,260 @@
+Slices  
+
+Create a New Slice:   
+
+Endpoint: POST /create_slice   
+
+Description: This endpoint enables the creation of a new slice.  
+
+Stop a Slice:   
+
+Endpoint: POST /stop_slice   
+
+Description: This endpoint allows for stopping a specific slice. The "sliceId" parameter must be provided as an HTTP POST parameter.  
+
+Delete a Slice:   
+
+Endpoint: POST /delete_slice   
+
+Description: This endpoint enables the deletion of a slice.  
+
+Resume a Slice:   
+
+Endpoint: GET /resume_slice/{sliceId}   
+
+Description: This endpoint allows for resuming a previously stopped slice, identified by the provided "sliceId".  
+
+Update Slice Resource Allocation:   
+
+Endpoint: POST /update_slice   
+
+Description: This endpoint allows for updating the resource allocation of a given application within a slice.  
+
+Get Operation Status:   
+
+Endpoint: GET /getoperation/{name}/{opId}   
+
+Description: This endpoint retrieves the status of a specific operation identified by "name" and "opId".  
+
+
+KPIs  
+
+Get Deployment Time:   
+
+Endpoint: GET /getDeploymentTime/{sliceId}   
+
+Description: This endpoint provides the deployment time of a specific slice identified by "sliceId".  
+
+Get Decommissioning Time:   
+
+Endpoint: GET /getDecommissioningTime/{sliceId}   
+
+Description: This endpoint retrieves the decommissioning time of a specific slice identified by "sliceId".  
+
+Get Dashboard for KPI Monitoring:   
+
+Endpoint: GET /getDashboardKpi/{sliceId}   
+
+Description: This endpoint allows for retrieving the dashboard for KPI monitoring of a specific slice identified by "sliceId".  
+
+  Resource  
+
+Check Resource Availability:   
+
+Endpoint: POST /resource/availability   
+
+Description: This endpoint allows users to check if the required resources are available to host a service.  
+
+Reserve Resources:   
+
+Endpoint: POST /resource/reserve   
+
+Description: This endpoint enables users to reserve the requested computational and storage resources for a service.  
+
+Onboarding  
+
+Retrieve Onboarded Service Packages:   
+
+Endpoint: GET /service/onboard   
+
+Description: This endpoint retrieves a list of onboarded service packages.  
+
+Onboard a NSD:   
+
+Endpoint: POST /service/onboard   
+
+Description: This endpoint allows users to onboard a Network Service Descriptor (NSD).  
+
+Retrieve Information about a Specific Service Package:   
+
+Endpoint: GET /service/onboard/{onboardedNSDId}   
+
+Description: This endpoint retrieves information about a specific service package identified by "onboardedNSDId".  
+
+Enable network service package:   
+
+Endpoint: POST /service/enable  
+
+Description: This endpoint enables a network service package.  
+
+Instantiation  
+
+Create an Instance ID:  
+
+Endpoint: POST /service/instance/createId  
+
+Description: This endpoint creates an instance ID that will be used in future lifecycle operations. The instance is not yet instantiated. Querying the instance with the given ID will report it as NOT_INSTANTIATED.  
+
+Delete an Instance ID:  
+
+Endpoint: POST /service/instance/deleteId  
+
+Description: This endpoint deletes an instance ID if the instance is in the NOT_INSTANTIATED state. The request includes the instance ID to be deleted.  
+
+Instantiate a Network Service Instance:  
+
+Endpoint: POST /service/instance/instantiate  
+
+Description: This endpoint creates a network service instance. The request body includes the instance ID, which should have been created by a prior call to createId.  
+
+Update an Instantiated Network Service Instance:  
+
+Endpoint: POST /service/instance/update  
+
+Description: This endpoint updates a running network service instance. The request body includes the instance ID of the running instance.  
+
+Retrieve Information about a Specific Instance:  
+
+Endpoint: GET /service/instance/query/{nsInstanceId}  
+
+Description: This endpoint retrieves information about a specific network service instance identified by the provided instance ID.  
+
+Retrieve a List of Instances:  
+
+Endpoint: GET /service/instance/query  
+
+Description: This endpoint retrieves a list of network service instances.  
+
+Termination  
+
+Stop network service instance(s):   
+
+Endpoint: POST /service/instance/terminate   
+
+Description: This endpoint terminates one or more network service instance  
+
+Offboarding  
+
+Disable Network Service Package:   
+
+Endpoint: POST /service/disable   
+
+Description: This endpoint disables a network service package.  
+
+Delete Network Service Package:   
+
+Endpoint: POST /service/offboard   
+
+Description: This endpoint allows users to delete an onboarded network service package.  
+
+Monitoring  
+
+Retrieve Monitoring Information about an Instance:   
+
+Endpoint: GET /service/instance/monitoring/{nsInstanceId}   
+
+Description: This endpoint retrieves monitoring information about a network service instance identified by "nsInstanceId".  
+
+Start monitoring:  
+
+Endpoint: POST /service/instance/monitoring  
+
+Description: This endpoint starts monitoring.  
+
+Terminate monitoring:  
+
+Endpoint: /service/instance/terminatemonitoring  
+
+Description: This endpoint terminates monitoring.  
+
+Logging  
+
+Retrieve Logs from an Instance:   
+
+Endpoint: GET /service/instance/logs/{nsInstanceId}   
+
+Description: This endpoint retrieves logs from a network service instance identified by "nsInstanceId".  
+
+Start logging:   
+
+Endpoint: POST /service/instance/logs  
+
+Description: This endpoint creates a request to start getting logs from the instance.  
+
+Terminate logging:   
+
+Endpoint: POST /service/instance/terminatelogging  
+
+Description: This endpoint creates a request to terminate logging.  
+
+Lifecycleoperation  
+
+Retrieve information about a lifecycle operation:  
+
+Endpoint: GET /lifecycleoperation/query/{lifecycleoperationId}  
+
+Description: This endpoint retrieves information about a specific lifecycle operation. 
+
+
+  Exposure Capabilities in OAI-AMF 
+
+OAI-AMF supports the exposure of different types of events such as Location Reports or Registration Reports. 
+
+The base URL to access the AMF event exposure service is /namf_evts/v1. The following endpoints are offered according to section 5.3 of 3GPP TS 29.518 ​[7]​: 
+
+POST /namf_evts/v1/subscriptions that allows to create a new subscription to receive notifications about the registration state of certain UEs or their updated location. 
+
+PUT /namf_evts/v1/subscriptions/<subscription_id> that allows to modify an existing subscription. 
+
+DELETE /namf_evts/v1/subscriptions/<subscription_id> that allows to delete a previously created subscription. 
+
+  
+
+Exposure Capabilities in OAI-SMF 
+
+OAI-SMF supports the exposure of Session Establishment Events. 
+
+The base URL to access the SMF event exposure service is /nsmf_events-exposure/v1. The following endpoints are offered following section 4 of 3GPP TS 29.508 ​[8]​: 
+
+POST / nsmf_events-exposure /v1/subscriptions that allows to create a new subscription to receive notifications about the establishment of a new PDU Session. 
+
+PUT / nsmf_events-exposure /v1/subscriptions/<subscription_id> that allows to modify an existing subscription. 
+
+DELETE / nsmf_events-exposure /v1/subscriptions/<subscription_id> that allows to delete a previously created subscription. 
+
+   
+
+Exposure via 3GPP Standard Northbound 
+
+The NEF exposes RESTful endpoints to manage and handle monitoring event subscriptions according to section 5.3 of TS 129.122 (​ [9]​.  
+
+s). 
+
+The base URL to access the NEF Monitoring Event API is /3gpp-monitoring-event/v1. 
+
+POST /3gpp-monitoring-event/v1/subscriptions that allows to create a new subscription to receive notifications about the establishment of a new PDU Session. 
+
+PATCH /3gpp-monitoring-event/v1/subscriptions/<subscription_id> that allows to modify an existing subscription. 
+
+DELETE /3gpp-monitoring-event/v1/subscriptions/<subscription_id> that allows to delete a previously created subscription. 
+
+ 
+
+Exposure via CAPIF  
+
+The CAPIF framework is not yet supported but it could be integrated with the current OAI-NEF implementation.  
+
+To achieve this, the necessary steps are the deployment of the CAPIF Core Function and the implementation of the CAPIF API Exposing Function, API Publishing Function, and the API Management Function inside OAI-NEF (see TS 23.222 ​[10]​). 
+ However, the availability of exposed capabilities would be limited to the ones currently exposed by the actual implementation of the Network Exposure Function. 
+ 
+  

@@ -1,0 +1,48 @@
+@startuml 
+
+
+start
+       
+:Check for service orders;
+->human accepts;
+:Order is changed from INITIAL to ACKNOWLEDGED;
+stop
+
+start
+-> TIMER;
+:Fetch Acknowledged Orders;
+-> List of ordersToBeProcessed;
+:Initialize Process Order;
+note right: Each order is INPROGRESS
+partition "**process** Start Order Process" {
+    note
+        Start Order Process
+        ----
+        //Start Order Process//
+    end note
+    :Find Order Items;
+    repeat :for each ServiceOrderItem
+    
+    	partition "**process** Process Order Item" {    	
+    		:ProcessOrderItemActionCheck;
+    		if (ServiceOrderActionType.ADD) then (yes)
+				  :Action Add;
+				  :CreateServiceProcess;
+				  
+				  
+				else if (ServiceOrderActionType.MODIFY) then  (yes)
+					:Action MODIFY;
+				else if (ServiceOrderActionType.DELETE) then  (yes)
+					:Action DELETE;
+				endif
+    		:Process OrderItemComplete;
+    	
+	}
+	repeat while    
+    
+}
+
+
+
+stop
+@enduml

@@ -1,0 +1,221 @@
+<div class="container py-5">
+
+    <!-- Heading -->
+    <h2 class="h2 text-center shadowed mb-5">Service Order Checkout</h2>
+
+    <!--Grid row-->
+    <h4 class="row justify-content-center" *ngIf="orderedSpecsConfigurationList.length === 0">
+        Service Order List is empty
+    </h4>
+
+    <ng-container *ngIf="orderedSpecsConfigurationList.length">
+        
+        <div class="row">
+            <div class="col-md-8 mb-4">
+                <div class="card card-paper shadow">
+                    <h5 class="card-header">
+                        Selected Service Configuration
+                        <small class="text-muted d-block">{{selectedOrderSpecToView?.spec.name}}</small>
+                    </h5>
+                    <div class="card-body">
+        
+                        <div *ngIf="configurableSpecChar.length === 0" class="no-chars-found">
+                            This service does not contain any configurable characteristics
+                        </div>
+        
+                        <div formArray="specCharFormArray" *ngIf="configurableSpecChar.length > 0">
+                            <div *ngFor="let charForm of specCharFormArray.controls; let i = index; let last = last" [formGroup]="charForm"
+                                class="row  justify-content-center" 
+                                [class.justify-content-start]="charForm.get('valueType').value ==='ARRAY'" 
+                                [ngClass]="{'border-bottom':!last, 'align-items-center':charForm.get('valueType').value !=='ARRAY', 'align-items-baseline':charForm.get('valueType').value ==='ARRAY'}">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                            <i class="fas fa-info-circle mr-2 info-icon" *ngIf="!configurableSpecChar[i].description" matTooltipClass="universal-tooltip" matTooltip="No description available" matTooltipPosition="above"></i>
+                                            <i class="fas fa-info-circle mr-2 info-icon" *ngIf="configurableSpecChar[i].description" matTooltipClass="universal-tooltip" [matTooltip]="configurableSpecChar[i].description" matTooltipPosition="above"></i>
+                                            <b>{{charForm.get('name').value}}</b>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-6" [ngSwitch]="charForm.get('valueType').value">
+        
+                                    <ng-container *ngSwitchCase="'SET'">
+                                        <ng-container *ngTemplateOutlet="iterables"></ng-container>
+                                    </ng-container>
+        
+                                    <ng-container *ngSwitchCase="'ARRAY'">
+                                        <ng-container *ngTemplateOutlet="arrays"></ng-container>
+                                    </ng-container>
+        
+                                    <ng-container *ngSwitchCase="'ENUM'">
+                                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
+                                    </ng-container>
+
+                                    <ng-container *ngSwitchCase="'BINARY'">
+                                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
+                                    </ng-container>
+        
+                                    <ng-container *ngSwitchCase="'TIMESTAMP'">
+                                        <mat-form-field [owlDateTimeTrigger]="pickerFrom">
+                                            <mat-label>Custom Value</mat-label>
+                                            <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
+                                                [(ngModel)]="charForm.get('value').value[0].value.value"
+                                                [ngModelOptions]="{standalone: true}">
+                                            <mat-icon matSuffix>date_range</mat-icon>
+                                            <!-- <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span> -->
+                                            <owl-date-time #pickerFrom></owl-date-time>
+                                        </mat-form-field>
+                                    </ng-container>
+        
+                                    <ng-container *ngSwitchDefault>
+                                        <mat-form-field >
+                                            <mat-label>Custom Value</mat-label>
+                                            <input matInput [(ngModel)]="charForm.get('value').value[0].value.value"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </mat-form-field>
+                                    </ng-container>
+        
+                                    <ng-template #iterables>
+                                        <mat-form-field>
+                                            <mat-label>Custom Value</mat-label>
+                                            <mat-select formControlName="value" multiple>
+                                                <mat-option
+                                                    *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue"
+                                                    [value]="charValue">
+                                                    {{charValue.value.alias}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </ng-template>
+
+                                    <ng-template #enumerable>
+                                        <mat-form-field >
+                                            <mat-label>Custom Value</mat-label>
+                                            <mat-select [(ngModel)]="charForm.get('value').value[0]"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option
+                                                    *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue"
+                                                    [value]="charValue">
+                                                    {{charValue.value.alias}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                    </ng-template>
+
+                                    <ng-template #arrays>
+                                        <div>
+                                            <div class="row" *ngFor="let charValue of charForm.get('value').value; let chVi = index">
+                                                <div [ngClass]="{'col-12': configurableSpecChar[i].serviceSpecCharacteristicValue.length === 1, 'col-10': configurableSpecChar[i].serviceSpecCharacteristicValue.length > 1}">
+                                                    <div class="row">
+                                                        <mat-form-field class="col-sm-6 col-md-12 col-xl-6">
+                                                            <mat-label>Custom Alias</mat-label>
+                                                            <input matInput [(ngModel)]="charValue.value.alias"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </mat-form-field >
+                                                        <mat-form-field class="col-sm-6 col-md-12 col-xl-6">
+                                                            <mat-label>Custom Value</mat-label>
+                                                            <input matInput [(ngModel)]="charValue.value.value"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 d-flex justify-content-center align-items-center" *ngIf="configurableSpecChar[i].serviceSpecCharacteristicValue.length > 1">
+                                                    <button mat-icon-button><i class="material-icons" (click)="deleteFromArrayCharacteristicValue(configurableSpecChar[i], chVi)" aria-label="Clear Characteristic Value">clear</i></button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <button class="btn btn-block btn-success"
+                                                        (click)="addToArrayCharacteristicValue(configurableSpecChar[i])"><i
+                                                            class="fas fa-plus-circle mr-1"></i>Add new value</button>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-md-4 mb-4">
+        
+                <!-- Heading -->
+                <h5 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Order Item List</span>
+                    <span class="badge badge-secondary badge-pill">{{orderedSpecsConfigurationList.length}}</span>
+                </h5>
+        
+                <!-- Cart -->
+                <ul class="list-group mb-3 card card-paper shadow">
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                        *ngFor="let item of orderedSpecsConfigurationList" (click)="viewAndConfigureSpec(item)"
+                        [ngClass]="{'selected-spec': selectedOrderSpecToView === item}">
+                        <div>
+                            <h6 class="my-0">{{item.spec.name}}</h6>
+                            <small class="text-muted">{{item.spec.version}}</small>
+                        </div>
+                        <div>
+                            <button mat-icon-button (click)="removeSpecFromCart(item)"><i
+                                    class="material-icons">close</i></button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="row" *ngIf="orderedSpecsConfigurationList.length">
+            <div class="col-md-12 mb-4">
+                <div class="card card-paper shadow">
+                    <h5 class="card-header">
+                        Service Order Preferences
+                    </h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <mat-form-field class="col-12">
+                                <mat-label>Notes about the order</mat-label>
+                                <textarea matInput [formControl]="serviceNoteCtrl" cdkTextareaAutosize
+                                    #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2">
+                                        </textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field class="col-md-6" [owlDateTimeTrigger]="pickerFrom">
+                                <mat-label>Requested Start Date</mat-label>
+        
+                                <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" [formControl]="reqStartDate">
+                                <mat-icon matSuffix>date_range</mat-icon>
+                                <owl-date-time #pickerFrom></owl-date-time>
+                                <mat-hint>Date is displayed in Local Time <span *ngIf="reqStartDate.value">(UTC: {{reqStartDate.value | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                            </mat-form-field>
+        
+                            <mat-form-field class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
+                                <mat-label>Requested Completion Date</mat-label>
+                                <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time"
+                                    [formControl]="reqCompletionDate">
+                                <mat-icon matSuffix>date_range</mat-icon>
+                                <owl-date-time #pickerUntil></owl-date-time>
+                                <mat-hint>Date is displayed in Local Time <span *ngIf="reqCompletionDate.value">(UTC: {{reqCompletionDate.value | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+
+    <div class="row justify-content-center" *ngIf="orderedSpecsConfigurationList.length">
+        <div class="col-12">
+            <button class="btn btn-primary btn-block shadow" type="submit" (click)="submitOrder()">Order Service</button>
+        </div>
+    </div> 
+
+</div>

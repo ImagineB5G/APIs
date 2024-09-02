@@ -1,0 +1,115 @@
+The reference client sample code for developers will be provided in a python client library that will include for instance, the following NacApi class functions: 
+
+class NacApi: 
+
+    def getListOfSites(self) -> list: 
+
+    def getSite(self, site) -> dict: 
+
+    def getImsis(self) -> list: 
+
+    def getImsisRanges(self) -> list: 
+
+    def getSlices(self, site, plmn) -> list: 
+
+    def getSlice(self, site, plmn, id) -> dict: 
+
+    def newSlice(self, site, plmn, qos) -> dict: 
+
+    def deleteSlice(self, site, plmn, id) -> None: 
+
+    def updateSlice(self, site, plmn, id, type, mode, max_quota, min_quota) -> dict: 
+
+    def getImsiSlices(self, imsi) -> list: 
+
+    def getImsiSlice(self, imsi, slice) -> dict: 
+
+    def newImsiSlice(self, imsi, slice, ip) -> dict: 
+
+    def deleteImsiSlice(self, imsi, slice) -> dict: 
+
+    def getRadioAndSliceStatus(self, site, plmn, id, type, mode) -> dict: 
+
+    def getSliceKpis(self, site, plmn, id, type, mode, kpi, **kwargs) -> list: 
+
+    def getBatteriesKpis(self, site, **kwargs) -> list:  
+
+    def getSensorsConsumKpis(self, site, **kwargs) -> list: 
+
+ 
+
+A reference python client example using this library is provided, like the following:  
+
+ 
+
+from nac_client import NacApi 
+
+from pprint import pprint 
+
+import datetime 
+
+import csv 
+
+ 
+
+# Parameters set in config.ini 
+
+ Create instance of the NaC API class: 
+
+api = NacApi() 
+
+# Range of datetimes to get KPIs data: 
+
+start_time = datetime.datetime(2023, 6, 1) 
+
+final_time = datetime.datetime(2023, 6, 12) 
+
+# Deltas: 
+
+delta = datetime.timedelta(hours=23, minutes=59, seconds=59) 
+
+delta_start = datetime.timedelta(days=1) 
+
+# File to store the results: 
+
+filename = 'sensors_data.csv' 
+
+with open(filename, 'w', newline='') as csvfile: 
+
+    # Get a sample of KPIs (1h) to save the file headers: 
+
+    sensors_kpis = api.getSensorsConsumKpis('matanza') 
+
+    # The keys from the first dictionary will be the column headers 
+
+    fieldnames = sensors_kpis[0].keys() 
+
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames) 
+
+    # Write the column headers 
+
+    writer.writeheader() 
+
+    print(f'\nGetting KPIs of sensors consumption for site \'matanza\'...') 
+
+    # Iterate over range of datetimes: 
+
+    while (start_time < final_time): 
+
+       end_time = start_time + delta 
+
+        print(f'\t{start_time}...', end="", flush=True) 
+
+        sensors_kpis = api.getSensorsConsumKpis('matanza',start_time=start_time.strftime('%Y-%m-%d %H:%M:%S'),end_time=end_time.strftime('%Y-%m-%d %H:%M:%S')) 
+
+        print(f'done.') 
+
+        start_time += delta_start 
+
+        # Write the data rows (skip if no elements are returned from server) 
+
+        if (type(sensors_kpis) == list): 
+
+            writer.writerows(sensors_kpis) 
+
+print(f"\nCSV file '{filename}' has been generated.") 

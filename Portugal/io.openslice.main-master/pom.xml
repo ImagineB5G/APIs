@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.openslice</groupId>
+	<artifactId>io.openslice.main</artifactId>
+	<version>1.2.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>io.openslice.main</name>
+	<organization>
+		<name>openslice.io</name>
+		<url>http://openslice.io</url>
+	</organization>
+
+	<inceptionYear>2019</inceptionYear>
+
+	<properties>
+		<jackson.version>2.8.11</jackson.version>
+		<maven-license-plugin.version>2.0.0</maven-license-plugin.version>
+		<license.licenseName>apache_v2</license.licenseName>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<camel.version>4.0.0-RC2</camel.version>
+		<spring-boot-version>3.1.2</spring-boot-version>
+		<swagger.version>3.0.0</swagger.version>
+		<springdoc-version>2.1.0</springdoc-version>
+		<java.version>17</java.version>
+		<keycloak.version>22.0.1</keycloak.version>
+		<flowable-version>7.0.0.M1</flowable-version>
+		<springdoc-security-version>1.7.0</springdoc-security-version>
+		<springdoc-openapiui-version>1.7.0</springdoc-openapiui-version>
+
+		<!-- mainly for gw api -->
+		<oauth.version>2.4.0.RELEASE</oauth.version>
+		<jwt.version>1.0.10.RELEASE</jwt.version>
+		<netflix-zuul.version>2.1.1.RELEASE</netflix-zuul.version>
+		<oauth-autoconfig.version>2.2.4.RELEASE</oauth-autoconfig.version>
+
+
+		<!-- encoding -->
+
+		<encoding>utf-8</encoding>
+		<encoding.build.source>${encoding}</encoding.build.source>
+		<encoding.report.out>${encoding}</encoding.report.out>
+		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+		<mysql.connector.version>8.0.33</mysql.connector.version>
+
+
+	</properties>
+
+	<modules>
+		<module>../io.openslice.sol005nbi.osm</module>
+		<module>../io.openslice.sol005nbi.osm10</module>
+		<module>../io.openslice.model</module>
+		<module>../io.openslice.centrallog.client</module>
+		<module>../io.openslice.portal.api</module>
+		<module>../io.openslice.tmf.api</module>
+		<module>../io.openslice.oas</module>
+		<module>../io.openslice.mano</module>
+		<module>../io.openslice.bugzilla</module>
+		<module>../io.openslice.centrallog.service</module>
+		<module>../io.openslice.osom</module>
+
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+				<!-- run mvn license:update-file-header to manually update all headers everywhere -->
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>${maven-license-plugin.version}</version>
+					<configuration>
+						<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+						<processStartTag>========================LICENSE_START=================================</processStartTag>
+						<processEndTag>=========================LICENSE_END==================================</processEndTag>
+						<excludes>*.json</excludes>
+						<roots>src/main/java,src/test/java</roots>
+						
+					</configuration>
+					<executions>
+						<execution>
+							<id>generate-license-headers</id>
+							<goals>
+								<goal>update-file-header</goal>
+							</goals>
+							<phase>process-sources</phase>
+							<configuration>
+								<licenseName>${license.licenseName}</licenseName>
+								
+							</configuration>
+						</execution>
+						<execution>
+							<id>download-licenses</id>
+							<goals>
+								<goal>download-licenses</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+
+</project>

@@ -1,0 +1,178 @@
+# Default values for openslice.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  artemis:
+    repository: apache/activemq-artemis
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "2.30.0"
+  blockdiag:
+    repository: yuzutech/kroki-blockdiag
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  bugzilla:
+    repository: openslice/io.openslice.bugzilla
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  centrallog:
+    repository: openslice/io.openslice.centrallog.service
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  keycloak:
+    repository: jboss/keycloak
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "16.1.1"
+  kroki:
+    repository: yuzutech/kroki
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  manoclient:
+    repository: openslice/io.openslice.mano
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  osom:
+    repository: openslice/io.openslice.osom
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  portalapi:
+    repository: openslice/io.openslice.portal.api
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  osscapi:
+    repository: openslice/io.openslice.tmf.api
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  mysql:
+    repository: mysql
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "5.7.43"
+  oasapi:
+    repository: openslice/io.openslice.oas
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  portalweb:
+    repository: openslice/io.openslice.portal.web
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  tmfweb:
+    repository: openslice/io.openslice.tmf.web
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+bugzillaurl: example.com:443/bugzilla
+bugzillakey: VH2Vw0iI5aYgALFFzVDWqhACwt6Hu3bXla9kSC1Z
+main_operations_product: My Operations
+centrallogurl: http://elk_ip:elk_port/index_name/_doc
+rooturl: ~ # This is the ingress LB IP or domain - ex. http://openslice.com:port or http://3.15.198.35:8080
+
+oscreds:
+  activemq:
+    user: artemis
+    password: artemis
+  mysql:
+    username: root
+    password: letmein
+    openslicedb: osdb
+    keycloak: 
+      database: keycloak
+      username: keycloak
+      password: password
+      adminpassword: keycloakadminpass
+    portal:
+      database: osdb
+      username: portaluser
+      password: 12345
+
+spring:
+  oauthClientSecret: secret
+
+mysql:
+  storage: 10Gi
+  
+# Storage class to be used for provisioning. Default is manual
+# storageClass: ~
+
+hostNetwork: false
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  host: chart-example.local
+  enabled: false
+  annotations: {}
+
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

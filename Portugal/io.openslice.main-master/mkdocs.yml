@@ -1,0 +1,76 @@
+# Project information
+site_name: Openslice
+site_description: Openslice - Open source OSS
+site_author: Openslice.io
+site_url: http://openslice.io
+
+# Repository
+repo_name: openslice
+repo_url: https://github.com/openslice
+edit_uri: ""
+docs_dir: doc
+
+# edit_uri: edit/docs-revamp/docs/
+# edit_uri: blob/docs-revamp/docs/
+
+# remote_name: origin
+# remote_branch: gh-pages
+
+# Theme and overrides, i.e. language partial
+theme:
+  name: mkdocs
+
+  # Don't include MkDocs' JavaScript
+  include_search_page: false
+  search_index_only: true
+
+  # Default values, taken from mkdocs_theme.yml
+  language: en
+  feature:
+    tabs: true
+  palette:
+    primary: 'teal'
+    accent: 'light blue'
+  logo: 'images/openslice_logo.png'
+
+# Copyright
+copyright: "Copyright &copy; 2019-2023 Openslice Project"
+
+# Options
+extra:
+  search:
+    languages: "en"
+  social:
+    - type: globe
+      link: http://openslice.io
+    - type: github-alt
+      link: https://github.com/openslice
+    - type: twitter
+      link: https://twitter.com/OpensliceOSS
+
+# Page tree
+nav:
+  - Overview:
+      - Introduction: index.md
+  - Getting Started:
+      - Deployment/Installation: deployment.md
+      - NFV Orchestrator Configuration: nfvoconfig.md
+      - Service Catalogs: catalogs.md
+      - NFV Catalogs: nfvcatalogs.md
+      - LCM Rules: lcm.md
+      - Consuming Services From External OSS: ./architecture/consumingServicesFromExternalPartners.md
+      - Service Inventory: service_inventory.md
+      - Alarms and Actions: alarms_actions.md
+  - Design & Architecture:
+      - Architecture: ./architecture/architecture.md
+      - Message bus: ./architecture/messagebus.md
+      - OSOM: ./architecture/osom.md
+      - Authentication: ./architecture/oauth.md
+      - TMF API: ./architecture/tmfapi.md
+      - NFV API: ./architecture/nfvapi.md
+      - TMF WEB: ./architecture/tmfweb.md
+      - NFV WEB: ./architecture/nfvweb.md
+      - Issue management: ./architecture/issuemgt.md
+      - Central logging: ./architecture/centrallog.md
+  - Contributing:
+      - Developing: ./contributing/developing.md

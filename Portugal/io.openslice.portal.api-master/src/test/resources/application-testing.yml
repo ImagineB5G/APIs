@@ -1,0 +1,81 @@
+server:
+  port: 13000
+  servlet:
+    context-path : /osapi
+spring:
+  application:
+    name: openslice-portal-api-testing
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    password: sa
+    username: sa
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+      hbm2ddl.auto: create-drop
+    show-sql: true
+    generate-ddl: true
+ # Embedded ActiveMQ Configuration Example
+  activemq:
+      broker-url: vm://embedded?broker.persistent=false,useShutdownHook=false
+      in-memory: true
+      non-blocking-redelivery: true
+      pool:
+        block-if-full: true
+        block-if-full-timeout: -1
+        create-connection-on-startup: true
+        enabled: false
+        expiry-timeout: 0
+        idle-timeout: 30000
+        max-connections: 1
+        maximum-active-session-per-connection: 500
+        reconnect-on-exception: true
+        time-between-expiration-check: -1
+        use-anonymous-producers: true
+  # Spring JMS Settings
+  jms:
+    listener:
+      acknowledge-mode: auto
+      auto-startup: true
+      concurrency: 5
+      max-concurrency: 10
+    pub-sub-domain: false
+    template:
+      default-destination:
+      delivery-mode: non_persistent
+      priority: 100
+      qos-enabled: true
+      receive-timeout: 1000
+      time-to-live: 36000
+  servlet:
+    multipart.max-file-size: 10MB
+    multipart.max-request-size: 10MB
+  mail:
+    host: localhost
+    port: 8025
+    properties.mail.smtp.auth: false
+
+
+logging:
+  level:
+    root: INFO
+    portal.api: INFO
+    org.springframework: INFO
+    org.apache.camel: INFO 
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+    file: "%d %p %c{1.} [%t] %m%n"
+       
+ 
+oauthsign:
+   key: "EK97Y7Y9WPGG1MEG"
+   
+   
+
+#QUEUE MESSSAGES WITH VNFNSD CATALOG
+NFV_CATALOG_GET_NSD_BY_ID: "jms:queue:NFVCATALOG.GET.NSD_BY_ID" 
+NFV_CATALOG_DEPLOY_NSD_REQ: "jms:queue:NFVCATALOG.DEPLOY.NSD_REQ"
+NFV_CATALOG_GET_DEPLOYMENT_BY_ID : "jms:queue:NFVCATALOG.GET.DEPLOYMENT_BY_ID"
+NFV_CATALOG_UPD_DEPLOYMENT_BY_ID: "jms:queue:NFVCATALOG.UPD.DEPLOYMENT_BY_ID"
+GET_USER_BY_USERNAME: "jms:queue:GET.USER_BY_USERNAME"
